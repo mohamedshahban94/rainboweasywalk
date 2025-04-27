@@ -1,0 +1,31 @@
+package com.shop.rainboweasywalk.model;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "sale_groups")
+public class SaleGroup {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    private LocalDateTime soldAt = LocalDateTime.now();
+
+    private Integer totalAmount;
+    private Integer totalDiscount;
+
+    @OneToMany(mappedBy = "saleGroup", cascade = CascadeType.ALL)
+    private List<Sale> items = new ArrayList<>();
+}
+
