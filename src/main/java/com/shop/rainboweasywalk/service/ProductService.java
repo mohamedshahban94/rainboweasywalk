@@ -1,6 +1,7 @@
 package com.shop.rainboweasywalk.service;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import com.shop.rainboweasywalk.model.Product;
 import com.shop.rainboweasywalk.repo.ProductRepository;
@@ -64,4 +65,40 @@ public class ProductService {
         p.setStock(p.getStock() + qtyToAdd);
         return productRepo.save(p);
     }
+    // 1. Dynamic Filter Products
+    public List<Product> filterProducts(Optional<String> brand, Optional<String> color, Optional<Integer> size,
+                                        Optional<String> gender, Optional<String> category) {
+
+        Specification<Product> spec = Specification.where(null);
+
+        if (brand.isPresent()) {
+            spec = spec.and((root, query, cb) -> cb.equal(root.get("brand"), brand.get()));
+        }
+        if (color.isPresent()) {
+            spec = spec.and((root, query, cb) -> cb.equal(root.get("color"), color.get()));
+        }
+        if (size.isPresent()) {
+            spec = spec.and((root, query, cb) -> cb.equal(root.get("size"), size.get()));
+        }
+        if (gender.isPresent()) {
+            spec = spec.and((root, query, cb) -> cb.equal(root.get("gender"), gender.get()));
+        }
+        if (category.isPresent()) {
+            spec = spec.and((root, query, cb) -> cb.equal(root.get("category"), category.get()));
+        }
+
+        return productRepo.findAll(spec);
+    }
+
+    // 2. Search by Product Name
+    public List<Product> searchProductsByName(String keyword) {
+        return productRepo.findByNameContainingIgnoreCase(keyword);
+    }
+
+    // 3. Search by Product Code
+    public Product searchProductByCode(String code) {
+        return productRepo.findByCode(code)
+                .orElseThrow(() -> new RuntimeException("Product not found with code: " + code));
+    }
+
 }
