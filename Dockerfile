@@ -1,14 +1,24 @@
-# Start from an official JDK image
-FROM openjdk:17-jdk-slim
+# Use official Maven image to build the JAR
+FROM maven:3.8.7-openjdk-17 AS build
 
-# Set working directory
 WORKDIR /app
 
-# Copy the built jar file
-COPY target/rainboweasywalk-0.0.1-SNAPSHOT.jar app.jar
+# Copy the full project (including pom.xml and src/)
+COPY . .
 
-# Expose port (same as in your Spring Boot app — default 8080)
+# Build the project (creates target/*.jar)
+RUN ./mvnw clean package -DskipTests
+
+# Use lightweight OpenJDK image to run the app
+FROM openjdk:17-jdk-slim
+
+WORKDIR /app
+
+# Copy the built jar from the previous stage
+COPY --from=build /app/target/*.jar app.jar
+
+# Expose the Spring Boot default port
 EXPOSE 8080
 
-# Run the JAR
+# Start the app
 ENTRYPOINT ["java", "-jar", "app.jar"]
