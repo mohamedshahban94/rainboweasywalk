@@ -21,7 +21,7 @@ public class WebConfig implements WebMvcConfigurer {
         @Override
         public void addInterceptors(InterceptorRegistry registry) {
             registry.addInterceptor(authFilter)
-                    .excludePathPatterns("/auth/login", "/auth/register", "/auth/login-required");
+                    .excludePathPatterns("/api/auth/login", "/api/auth/register", "/api/auth/login-required");
         }
 
 //    @Override

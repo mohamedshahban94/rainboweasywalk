@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpSession;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class AuthController {
 
     @Autowired
