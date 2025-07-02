@@ -1,5 +1,6 @@
 package com.shop.rainboweasywalk.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,7 +26,9 @@ public class SaleGroup {
     private Integer totalAmount;
     private Integer totalDiscount;
 
+
     @OneToMany(mappedBy = "saleGroup", cascade = CascadeType.ALL)
+    @JsonIgnore // optional unless you're using this as a response
     private List<Sale> items = new ArrayList<>();
 }
 

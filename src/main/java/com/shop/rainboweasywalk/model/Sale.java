@@ -1,5 +1,6 @@
 package com.shop.rainboweasywalk.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,6 +23,7 @@ public class Sale {
 
     @ManyToOne
     @JoinColumn(name = "sale_group_id")
+    @JsonIgnore // 🛑 Prevent infinite recursion
     private SaleGroup saleGroup;
 
     private Integer quantity;
