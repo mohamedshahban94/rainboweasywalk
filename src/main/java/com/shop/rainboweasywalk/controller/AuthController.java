@@ -40,8 +40,13 @@ public class AuthController {
     }
 
     @GetMapping("/login-required")
-    public ResponseEntity<String> loginRequired() {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Please login to access this page.");
+    public ResponseEntity<?> loginRequired(HttpSession session) {
+        Object user = session.getAttribute("loggedInUser");
+        if (user != null) {
+            return ResponseEntity.ok("Already logged in");
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Please login to access this page.");
+        }
     }
 
     @PostMapping("/admin/change-password")
