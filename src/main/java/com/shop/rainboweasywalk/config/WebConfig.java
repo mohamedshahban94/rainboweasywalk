@@ -18,17 +18,17 @@ public class WebConfig implements WebMvcConfigurer {
     @Autowired
     private AuthFilter authFilter;
 
-        @Override
-        public void addInterceptors(InterceptorRegistry registry) {
-            registry.addInterceptor(authFilter)
-                    .excludePathPatterns("/api/auth/login","/api/auth/logout","/api/auth/login-required");
-        }
+//        @Override
+//        public void addInterceptors(InterceptorRegistry registry) {
+//            registry.addInterceptor(authFilter)
+//                    .excludePathPatterns("/api/auth/login","/api/auth/logout","/api/auth/login-required");
+//        }
 
-//    @Override
-//    public void addInterceptors(InterceptorRegistry registry) {
-//        registry.addInterceptor(authFilter)
-//                .excludePathPatterns("/**"); // Temporarily disable for all
-//    }
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(authFilter)
+                .excludePathPatterns("/**"); // Temporarily disable for all
+    }
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
